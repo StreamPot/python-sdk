@@ -1,9 +1,9 @@
 # streampot
 
 [![PyPI](https://img.shields.io/pypi/v/streampot.svg)](https://pypi.org/project/streampot/)
-[![Tests](https://github.com/streampot/streampot/actions/workflows/test.yml/badge.svg)](https://github.com/streampot/streampot/actions/workflows/test.yml)
-[![Changelog](https://img.shields.io/github/v/release/streampot/streampot?include_prereleases&label=changelog)](https://github.com/streampot/streampot/releases)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/streampot/streampot/blob/main/LICENSE)
+[![Tests](https://github.com/StreamPot/python-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/StreamPot/python-sdk/actions/workflows/test.yml)
+[![Changelog](https://img.shields.io/github/v/release/StreamPot/python-sdk?include_prereleases&label=changelog)](https://github.com/StreamPot/python-sdk/releases)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/StreamPot/python-sdk/blob/main/LICENSE)
 
 API client for StreamPot
 
