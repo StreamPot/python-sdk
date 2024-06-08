@@ -11,10 +11,38 @@ pip install streampot
 ```
 ## Usage
 
+Here's a simple example that converts a video file to an audio file:
+
 ```python
 from streampot import StreamPot
 
 client = StreamPot(secret='yourToken')
+
+job = client.input('https://download.samplelib.com/mp4/sample-5s.mp4') \
+    .output('audio.mp3') \
+    .run_and_wait()
+
+print(job.outputs['audio.mp3'])
+```
+
+If you want to run the job in the background, you can use the `run` method:
+
+```python
+job = client.input('https://download.samplelib.com/mp4/sample-5s.mp4') \
+    .output('audio.mp3') \
+    .run()
+```
+
+And fetch the job info using the `get_job` method:
+
+```python
+job = client.get_job(job.id)
+
+print(job.status)
+print(job.outputs['audio.mp3'])  # output url by file name
+print(job.logs)  # error logs if any
+print(job.created_at)
+print(job.completed_at)
 ```
 
 ## Development

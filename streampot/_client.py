@@ -1,21 +1,15 @@
 import requests
 from dataclasses import dataclass
-from typing import List, Optional
-from enum import Enum, auto
+from typing import Optional
+from enum import Enum
 import time
 
 
-@dataclass
-class Asset:
-    name: str
-    url: str
-
-
 class JobStatus(Enum):
-    PENDING = auto()
-    COMPLETED = auto()
-    FAILED = auto()
-    UPLOADING = auto()
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    UPLOADING = "uploading"
 
 
 @dataclass
@@ -23,7 +17,14 @@ class JobEntity:
     id: int
     status: JobStatus
     created_at: str
-    assets: Optional[List[Asset]] = None
+    logs: Optional[str] = None
+    outputs: Optional[dict] = None
+    completed_at: Optional[str] = None
+
+
+def _response_to_job(data: dict) -> JobEntity:
+    data['status'] = JobStatus[data['status'].upper()]
+    return JobEntity(**data)
 
 
 class StreamPotClient:
@@ -32,19 +33,17 @@ class StreamPotClient:
         self.base_url = base_url
         self.actions = []
 
-    def get_job(self, job_id: int) -> dict:
+    def get_job(self, job_id: int) -> JobEntity:
         response = requests.get(f"{self.base_url}/jobs/{job_id}", headers=self._auth_header())
         response.raise_for_status()
-        return response.json()
+
+        return _response_to_job(response.json())
 
     def run(self) -> JobEntity:
-        response = requests.post(f"{self.base_url}/", headers=self._auth_header(json=True), json=self.actions)
+        response = requests.post(f"{self.base_url}/", headers=self._auth_header(), json=self.actions)
         response.raise_for_status()
 
-        job_data = response.json()
-        job_data['status'] = JobStatus[job_data['status'].upper()]
-
-        return JobEntity(**job_data)
+        return _response_to_job(response.json())
 
     def run_and_wait(self, interval_ms: int = 1000) -> JobEntity:
         job = self.run()
@@ -53,15 +52,16 @@ class StreamPotClient:
             job = self.get_job(job.id)
         return job
 
-    def _auth_header(self, json: bool = False) -> dict:
-        headers = {"Authorization": f"Bearer {self.secret}"}
-        if json:
-            headers['Accept'] = 'application/json'
-            headers['Content-Type'] = 'application/json'
-        return headers
+    def _auth_header(self) -> dict:
+        return {
+            "Authorization": f"Bearer {self.secret}",
+            "Accept": 'application/json',
+            "Content-Type": 'application/json'
+        }
 
     def _add_action(self, name: str, *values):
-        self.actions.append({"name": name, "value": values})
+        self.actions.append({"name": name, "value": list(values)})
+        return self
 
     def merge_add(self, source: str):
         return self._add_action('mergeAdd', source)
