@@ -369,8 +369,8 @@ class StreamPotClient:
     def output_options(self, *options):
         return self._add_action('outputOptions', *options)
 
-    # def filter_graph(self, spec, map=None):
-    #     return self._add_action('filterGraph', spec, map)
-    #
-    # def complex_filter(self, spec, map=None):
-    #     return self._add_action('complexFilter', spec, map)
+    def filter_graph(self, spec, map=None):
+        return self._add_action('filterGraph', spec, map)
+
+    def complex_filter(self, spec, map=None):
+        return self._add_action('complexFilter', spec, map)

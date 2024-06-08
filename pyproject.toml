@@ -1,6 +1,6 @@
 [project]
 name = "streampot"
-version = "0.3.1"
+version = "0.3.2"
 description = "API client for StreamPot.io"
 readme = "README.md"
 requires-python = ">=3.8"
