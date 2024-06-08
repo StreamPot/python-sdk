@@ -1,4 +1,4 @@
-# streampot
+# Python client for StreamPot.io
 
 [![PyPI](https://img.shields.io/pypi/v/streampot.svg)](https://pypi.org/project/streampot/)
 [![Tests](https://github.com/StreamPot/python-sdk/actions/workflows/test.yml/badge.svg)](https://github.com/StreamPot/python-sdk/actions/workflows/test.yml)
