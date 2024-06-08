@@ -23,7 +23,9 @@ def test_get_job(stream_pot):
         m.get(mock_url, json=mock_response)
 
         response = stream_pot.get_job(job_id)
-        assert response == mock_response
+        assert response.id == mock_response['id']
+        assert response.status == JobStatus[mock_response['status'].upper()]
+        assert response.created_at == mock_response['created_at']
 
 
 def test_run(stream_pot):
@@ -43,7 +45,7 @@ def test_add_action(stream_pot):
     stream_pot.merge_add('source_video.mp4')
     assert len(stream_pot.actions) == 1
     assert stream_pot.actions[0]['name'] == 'mergeAdd'
-    assert stream_pot.actions[0]['value'] == ('source_video.mp4',)
+    assert stream_pot.actions[0]['value'] == ['source_video.mp4']
 
 
 @pytest.mark.parametrize("method, expected_action", [
@@ -56,4 +58,4 @@ def test_actions(stream_pot, method, expected_action):
     action_method('example_source')
     assert len(stream_pot.actions) == 1
     assert stream_pot.actions[0]['name'] == expected_action
-    assert stream_pot.actions[0]['value'] == ('example_source',)
+    assert stream_pot.actions[0]['value'] == ['example_source']
